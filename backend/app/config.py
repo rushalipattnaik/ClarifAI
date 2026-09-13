@@ -15,6 +15,12 @@ GEMINI_MODEL = os.getenv("GEMINI_MODEL")
 
 JWT_SECRET_KEY = os.getenv("JWT_SECRET_KEY")
 
+ALLOWED_ORIGINS = [
+    origin.strip()
+    for origin in os.getenv("ALLOWED_ORIGINS", "http://localhost:5173").split(",")
+    if origin.strip()
+]
+
 
 if not GEMINI_API_KEY:
     raise ValueError("Gemini API Key not found.")

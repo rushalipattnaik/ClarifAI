@@ -1,24 +1,21 @@
-# AI Notes
 .notes/
 notes/
 
-# Environment Variables
 .env
 backend/.env
 frontend/.env
 
-# Python
 backend/venv/
 __pycache__/
 *.pyc
 
-# Node
-frontend/node_modules/
+node_modules/
 frontend/dist/
 
-# Logs
+*.db
+*.sqlite3
+
 *.log
 
-# OS
 .DS_Store
 Thumbs.db

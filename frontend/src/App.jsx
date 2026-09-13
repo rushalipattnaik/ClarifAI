@@ -7,6 +7,7 @@ import ReportView from "./pages/ReportView";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ReportHistory from "./pages/ReportHistory";
+import NotFound from "./pages/NotFound";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 
@@ -14,25 +15,11 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Home />} />
 
-        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
 
-        <Route
-          path="/"
-          element={<Home />}
-        />
-
-        <Route
-          path="/login"
-          element={<Login />}
-        />
-
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
-
-        {/* Protected Routes */}
+        <Route path="/signup" element={<Signup />} />
 
         <Route
           path="/questions"
@@ -70,6 +57,7 @@ function App() {
           }
         />
 
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );

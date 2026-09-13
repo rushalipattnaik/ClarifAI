@@ -34,6 +34,6 @@ if not JWT_SECRET_KEY:
     raise ValueError("JWT secret key not configured.")
 
 
-print("✅ Gemini API Loaded")
-print(f"✅ Gemini Model: {GEMINI_MODEL}")
-print("✅ JWT Secret Loaded")
+print("[OK] Gemini API Loaded")
+print(f"[OK] Gemini Model: {GEMINI_MODEL}")
+print("[OK] JWT Secret Loaded")

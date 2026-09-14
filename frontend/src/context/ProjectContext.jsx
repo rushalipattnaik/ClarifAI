@@ -1,9 +1,10 @@
-import { createContext, useState } from "react";
+import { useState } from "react";
 
-export const ProjectContext = createContext();
+import { ProjectContext } from "./project-context";
 
 export function ProjectProvider({ children }) {
   const [projectIdea, setProjectIdea] = useState("");
+  const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [report, setReport] = useState(null);
 
@@ -12,6 +13,8 @@ export function ProjectProvider({ children }) {
       value={{
         projectIdea,
         setProjectIdea,
+        questions,
+        setQuestions,
         answers,
         setAnswers,
         report,

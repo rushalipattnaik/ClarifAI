@@ -1,19 +1,36 @@
-from pydantic import BaseModel, EmailStr
+from typing import List
+
+from pydantic import BaseModel, EmailStr, Field
+
+
+class QuestionItem(BaseModel):
+    id: int
+    question: str
+    options: List[str]
+
+
+class GenerateQuestionsRequest(BaseModel):
+    project: str = Field(..., min_length=3, max_length=300)
+
+
+class GenerateQuestionsResponse(BaseModel):
+    questions: List[QuestionItem]
+    source: str
 
 
 class ClarifyRequest(BaseModel):
-    project: str
+    project: str = Field(..., min_length=3, max_length=300)
     answers: dict
 
 
 class SignupRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=6, max_length=128)
 
 
 class LoginRequest(BaseModel):
     email: EmailStr
-    password: str
+    password: str = Field(..., min_length=1, max_length=128)
 
 
 class TokenResponse(BaseModel):
@@ -22,7 +39,7 @@ class TokenResponse(BaseModel):
 
 
 class CreateReportRequest(BaseModel):
-    project: str
+    project: str = Field(..., min_length=3, max_length=300)
     answers: dict
     report: str
 

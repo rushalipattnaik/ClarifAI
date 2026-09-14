@@ -1,10 +1,6 @@
 import sqlite3
-from pathlib import Path
 
-
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-
-DATABASE_PATH = BASE_DIR / "clarifai.db"
+from app.config import DATABASE_PATH
 
 
 def get_connection():
@@ -14,6 +10,8 @@ def get_connection():
 
 
 def initialize_database():
+    DATABASE_PATH.parent.mkdir(parents=True, exist_ok=True)
+
     connection = get_connection()
 
     cursor = connection.cursor()

@@ -21,6 +21,12 @@ ALLOWED_ORIGINS = [
     if origin.strip()
 ]
 
+RATE_LIMIT_MAX_REQUESTS = int(os.getenv("RATE_LIMIT_MAX_REQUESTS", "20"))
+
+RATE_LIMIT_WINDOW_SECONDS = int(os.getenv("RATE_LIMIT_WINDOW_SECONDS", "3600"))
+
+DATABASE_PATH = Path(os.getenv("DATABASE_PATH", str(BASE_DIR / "clarifai.db")))
+
 
 if not GEMINI_API_KEY:
     raise ValueError("Gemini API Key not found.")

@@ -1,6 +1,6 @@
-from app.services.prompt_builder import build_prompt
+from app.services.prompt_builder import build_prompt, build_questions_prompt
 from app.services.gemini_client import generate_text
-from app.services.formatter import clean_markdown
+from app.services.formatter import clean_markdown, parse_questions
 
 
 def generate_report(project, answers):
@@ -10,3 +10,12 @@ def generate_report(project, answers):
     response = generate_text(prompt)
 
     return clean_markdown(response)
+
+
+def generate_questions(project):
+
+    prompt = build_questions_prompt(project)
+
+    response = generate_text(prompt)
+
+    return parse_questions(response)

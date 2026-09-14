@@ -7,6 +7,7 @@ from app.config import ALLOWED_ORIGINS
 from app.routes.clarify import router as clarify_router
 from app.routes.auth import router as auth_router
 from app.routes.reports import router as reports_router
+from app.routes.questions import router as questions_router
 
 
 app = FastAPI(title="ClarifAI API")
@@ -27,10 +28,18 @@ initialize_database()
 app.include_router(clarify_router)
 app.include_router(auth_router)
 app.include_router(reports_router)
+app.include_router(questions_router)
 
 
 @app.get("/")
 def root():
     return {
         "message": "ClarifAI Backend Running"
+    }
+
+
+@app.get("/health")
+def health():
+    return {
+        "status": "ok"
     }

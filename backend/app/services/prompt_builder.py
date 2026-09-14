@@ -59,3 +59,29 @@ Clarification Answers
 
 {answer_text}
 """
+
+
+def build_questions_prompt(project):
+
+    return f"""
+You are a senior software business analyst who prepares sharp, project-specific clarification questions before writing a Software Requirements Specification.
+
+Read the project idea below and generate exactly 6 multiple-choice clarification questions that are directly relevant to building THIS specific project. The questions must change based on the type of project described, not be generic boilerplate that could apply to any app.
+
+Rules:
+- Every question must reference something specific to the described project domain.
+- Each question must have between 3 and 5 short, distinct answer options.
+- Cover different concerns across the 6 questions (for example: core functionality scope, target users, data handled, integrations, platform, and a domain-specific concern relevant to this project).
+- Output valid JSON only, with no explanation before or after it.
+- Do not wrap the output in triple backticks or markdown of any kind.
+- Match this exact schema exactly:
+
+[
+  {{"id": 1, "question": "string", "options": ["string", "string", "string"]}},
+  {{"id": 2, "question": "string", "options": ["string", "string", "string"]}}
+]
+
+Project Idea
+
+{project}
+"""

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import api from "../services/api";
@@ -7,6 +7,7 @@ function ReportHistory() {
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [reloadIndex, setReloadIndex] = useState(0);
 
   const formatTimestamp = (timestamp) => {
     if (!timestamp) {
@@ -28,29 +29,42 @@ function ReportHistory() {
     });
   };
 
-  const loadReports = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError("");
-
-      const response = await api.get("/reports/");
-
-      setReports(response.data.reports || []);
-    } catch (err) {
-      console.error("Failed to load reports:", err);
-
-      setError(
-        err.response?.data?.detail ||
-          "We couldn't load your reports right now."
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    loadReports();
-  }, [loadReports]);
+    let cancelled = false;
+
+    (async () => {
+      try {
+        const response = await api.get("/reports/");
+
+        if (!cancelled) {
+          setReports(response.data.reports || []);
+          setError("");
+        }
+      } catch (err) {
+        console.error("Failed to load reports:", err);
+
+        if (!cancelled) {
+          setError(
+            err.response?.data?.detail ||
+              "We couldn't load your reports right now."
+          );
+        }
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [reloadIndex]);
+
+  function retry() {
+    setLoading(true);
+    setReloadIndex((current) => current + 1);
+  }
 
   if (loading) {
     return (
@@ -60,9 +74,7 @@ function ReportHistory() {
             <span className="text-lg">AI</span>
           </div>
 
-          <h2 className="text-xl font-semibold">
-            Loading your reports
-          </h2>
+          <h2 className="text-xl font-semibold">Loading your reports</h2>
 
           <p className="mt-2 text-sm text-slate-400">
             Retrieving your saved SRS documents...
@@ -75,14 +87,9 @@ function ReportHistory() {
   return (
     <div className="min-h-screen bg-slate-950 px-6 py-10 text-white">
       <div className="mx-auto max-w-5xl">
-
-        {/* Header */}
         <div className="flex flex-wrap items-center justify-between gap-4">
-
           <div>
-            <h1 className="text-4xl font-bold">
-              Report History
-            </h1>
+            <h1 className="text-4xl font-bold">Report History</h1>
 
             <p className="mt-2 text-slate-400">
               Access your previously generated SRS reports.
@@ -95,52 +102,40 @@ function ReportHistory() {
           >
             + New Report
           </Link>
-
         </div>
 
-        {/* Error State */}
         {error && (
           <div className="mt-8 rounded-xl border border-red-900/70 bg-red-950/30 p-6">
-
             <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-
               <div>
                 <h2 className="text-lg font-semibold text-red-300">
                   Unable to load reports
                 </h2>
 
-                <p className="mt-2 text-sm text-red-400">
-                  {error}
-                </p>
+                <p className="mt-2 text-sm text-red-400">{error}</p>
               </div>
 
               <button
-                onClick={loadReports}
+                onClick={retry}
                 className="rounded-lg bg-red-700 px-5 py-2.5 font-medium transition hover:bg-red-600"
               >
                 Retry
               </button>
-
             </div>
-
           </div>
         )}
 
-        {/* Empty State */}
         {!error && reports.length === 0 && (
           <div className="mt-10 rounded-2xl border border-slate-700 bg-slate-900 p-10 text-center shadow-xl">
-
             <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-indigo-500/10 text-2xl">
               📄
             </div>
 
-            <h2 className="mt-6 text-2xl font-bold">
-              No reports yet
-            </h2>
+            <h2 className="mt-6 text-2xl font-bold">No reports yet</h2>
 
             <p className="mx-auto mt-3 max-w-md text-slate-400">
-              Turn your project idea into a professional
-              Software Requirements Specification with ClarifAI.
+              Turn your project idea into a professional Software
+              Requirements Specification with ClarifAI.
             </p>
 
             <Link
@@ -149,24 +144,18 @@ function ReportHistory() {
             >
               Create Your First Report
             </Link>
-
           </div>
         )}
 
-        {/* Report List */}
         {!error && reports.length > 0 && (
           <div className="mt-10 space-y-5">
-
             {reports.map((item) => (
               <div
                 key={item.id}
                 className="group rounded-xl border border-slate-700 bg-slate-900 p-6 shadow-lg transition hover:border-indigo-500/50 hover:bg-slate-900/80"
               >
-
                 <div className="flex flex-col gap-5 sm:flex-row sm:items-center sm:justify-between">
-
                   <div className="min-w-0">
-
                     <h2 className="truncate text-xl font-semibold text-white">
                       {item.project}
                     </h2>
@@ -176,10 +165,8 @@ function ReportHistory() {
                     </p>
 
                     <p className="mt-2 text-sm text-slate-500">
-                      Generated{" "}
-                      {formatTimestamp(item.created_at)}
+                      Generated {formatTimestamp(item.created_at)}
                     </p>
-
                   </div>
 
                   <Link
@@ -188,15 +175,11 @@ function ReportHistory() {
                   >
                     Open Report →
                   </Link>
-
                 </div>
-
               </div>
             ))}
-
           </div>
         )}
-
       </div>
     </div>
   );

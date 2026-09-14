@@ -3,6 +3,7 @@ import Hero from "../components/home/Hero";
 import ProjectInput from "../components/home/ProjectInput";
 import QuickExamples from "../components/home/QuickExamples";
 import Features from "../components/home/Features";
+import Footer from "../components/layout/Footer";
 
 function Home() {
   return (
@@ -16,6 +17,8 @@ function Home() {
       <QuickExamples />
 
       <Features />
+
+      <Footer />
     </div>
   );
 }

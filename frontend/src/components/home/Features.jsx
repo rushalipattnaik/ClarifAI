@@ -11,7 +11,10 @@ const features = [
 
 function Features() {
   return (
-    <section className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2">
+    <section
+      id="features"
+      className="mx-auto mt-16 grid max-w-5xl grid-cols-1 gap-5 md:grid-cols-2 scroll-mt-24"
+    >
       {features.map((feature) => (
         <div
           key={feature}

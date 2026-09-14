@@ -12,31 +12,40 @@ function Navbar() {
 
   return (
     <nav className="flex items-center justify-between px-6 py-4">
-
-      <Link
-        to="/"
-        className="text-2xl font-bold text-indigo-400"
-      >
+      <Link to="/" className="text-2xl font-bold text-indigo-400">
         ClarifAI
       </Link>
 
       <div className="flex items-center gap-4">
-
-        <button
+        {/* About */}
+        <a
+          href="/#features"
           className="rounded-lg border border-slate-700 px-4 py-2 text-slate-300 transition hover:bg-slate-800"
         >
           About
-        </button>
+        </a>
 
         {isAuthenticated ? (
-          <button
-            onClick={handleLogout}
-            className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-500"
-          >
-            Logout
-          </button>
+          <>
+            {/* History */}
+            <Link
+              to="/history"
+              className="rounded-lg border border-slate-700 px-4 py-2 text-slate-300 transition hover:bg-slate-800"
+            >
+              History
+            </Link>
+
+            {/* Logout */}
+            <button
+              onClick={handleLogout}
+              className="rounded-lg bg-red-600 px-4 py-2 text-white transition hover:bg-red-500"
+            >
+              Logout
+            </button>
+          </>
         ) : (
           <>
+            {/* Sign In */}
             <Link
               to="/login"
               className="rounded-lg border border-slate-700 px-4 py-2 text-slate-300 transition hover:bg-slate-800"
@@ -44,6 +53,7 @@ function Navbar() {
               Sign In
             </Link>
 
+            {/* Sign Up */}
             <Link
               to="/signup"
               className="rounded-lg bg-indigo-600 px-4 py-2 text-white transition hover:bg-indigo-700"
@@ -53,6 +63,7 @@ function Navbar() {
           </>
         )}
 
+        {/* GitHub */}
         <a
           href="https://github.com/rushalipattnaik"
           target="_blank"
@@ -61,7 +72,6 @@ function Navbar() {
         >
           GitHub
         </a>
-
       </div>
     </nav>
   );

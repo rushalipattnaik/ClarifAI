@@ -5,6 +5,7 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 
 import api from "../services/api";
+import { useToast } from "../hooks/useToast";
 
 import MarkdownRenderer from "../components/MarkdownRenderer";
 import ReportHeader from "../components/report/ReportHeader";
@@ -12,6 +13,7 @@ import ReportToolbar from "../components/report/ReportToolbar";
 
 function ReportView() {
   const { reportId } = useParams();
+  const { showToast } = useToast();
 
   const [report, setReport] = useState(null);
   const [project, setProject] = useState("");
@@ -114,9 +116,7 @@ function ReportView() {
     } catch (error) {
       console.error("PDF generation failed:", error);
 
-      alert(
-        "Unable to generate the PDF. Please try again."
-      );
+      showToast("Unable to generate the PDF. Please try again.", "error");
     } finally {
       setIsGeneratingPDF(false);
     }

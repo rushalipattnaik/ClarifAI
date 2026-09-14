@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
 import { useProject } from "../hooks/useProject";
+import { useToast } from "../hooks/useToast";
 
 import MarkdownRenderer from "../components/MarkdownRenderer";
 
@@ -12,6 +13,7 @@ import ReportToolbar from "../components/report/ReportToolbar";
 
 function Report() {
   const { report } = useProject();
+  const { showToast } = useToast();
 
   const reportRef = useRef(null);
   const [isGeneratingPDF, setIsGeneratingPDF] = useState(false);
@@ -79,7 +81,7 @@ function Report() {
     } catch (error) {
       console.error("PDF generation failed:", error);
 
-      alert("Unable to generate the PDF. Please try again.");
+      showToast("Unable to generate the PDF. Please try again.", "error");
     } finally {
       setIsGeneratingPDF(false);
     }

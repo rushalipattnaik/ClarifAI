@@ -85,3 +85,37 @@ Project Idea
 
 {project}
 """
+
+
+def build_refine_prompt(project, current_report, instruction):
+
+    return f"""
+You are refining an existing Software Requirements Specification (SRS) for a software project.
+
+## Instructions
+
+- Apply ONLY the requested change below to the report.
+- Keep every other section exactly as it is unless the requested change logically requires touching it.
+- Preserve the same Markdown structure and the same 9 sections, in the same order, with the same headings.
+- Do not add commentary, notes, or explanations about what you changed.
+- Output the full updated SRS as valid Markdown only, starting from "# Software Requirements Specification (SRS)".
+- Do not wrap the response in triple backticks.
+
+---
+
+Project Idea
+
+{project}
+
+---
+
+Current Report
+
+{current_report}
+
+---
+
+Requested Change
+
+{instruction}
+"""

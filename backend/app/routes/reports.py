@@ -4,7 +4,7 @@ from fastapi import APIRouter, Depends, HTTPException
 
 from app.auth.database import get_connection
 from app.auth.dependencies import get_current_user
-from app.models.schemas import CreateReportRequest
+from app.models.schemas import CreateReportRequest, UpdateReportRequest
 
 router = APIRouter(
     prefix="/reports",
@@ -122,6 +122,60 @@ def get_report(
             "answers": json.loads(report["answers"]),
             "report": report["report"],
             "created_at": report["created_at"],
+        }
+
+    finally:
+        connection.close()
+
+
+@router.put("/{report_id}")
+def update_report(
+    report_id: int,
+    request: UpdateReportRequest,
+    user_id: int = Depends(get_current_user),
+):
+    connection = get_connection()
+
+    try:
+        cursor = connection.cursor()
+
+        existing = cursor.execute(
+            """
+            SELECT id
+            FROM reports
+            WHERE id = ?
+            AND user_id = ?
+            """,
+            (
+                report_id,
+                user_id,
+            ),
+        ).fetchone()
+
+        if not existing:
+            raise HTTPException(
+                status_code=404,
+                detail="Report not found.",
+            )
+
+        cursor.execute(
+            """
+            UPDATE reports
+            SET report = ?
+            WHERE id = ?
+            AND user_id = ?
+            """,
+            (
+                request.report,
+                report_id,
+                user_id,
+            ),
+        )
+
+        connection.commit()
+
+        return {
+            "message": "Report updated successfully.",
         }
 
     finally:

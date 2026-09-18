@@ -23,6 +23,12 @@ class ClarifyRequest(BaseModel):
     answers: dict
 
 
+class RefineReportRequest(BaseModel):
+    project: str = Field(..., min_length=3, max_length=300)
+    report: str = Field(..., min_length=10, max_length=20000)
+    instruction: str = Field(..., min_length=3, max_length=300)
+
+
 class SignupRequest(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=6, max_length=128)
@@ -42,6 +48,10 @@ class CreateReportRequest(BaseModel):
     project: str = Field(..., min_length=3, max_length=300)
     answers: dict
     report: str
+
+
+class UpdateReportRequest(BaseModel):
+    report: str = Field(..., min_length=10, max_length=20000)
 
 
 class ReportResponse(BaseModel):

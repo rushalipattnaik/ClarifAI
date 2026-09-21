@@ -7,6 +7,7 @@ export function ProjectProvider({ children }) {
   const [questions, setQuestions] = useState([]);
   const [answers, setAnswers] = useState({});
   const [report, setReport] = useState(null);
+  const [reportId, setReportId] = useState(null);
 
   return (
     <ProjectContext.Provider
@@ -19,6 +20,8 @@ export function ProjectProvider({ children }) {
         setAnswers,
         report,
         setReport,
+        reportId,
+        setReportId,
       }}
     >
       {children}

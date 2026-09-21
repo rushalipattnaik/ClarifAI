@@ -10,6 +10,7 @@ import { useToast } from "../hooks/useToast";
 import MarkdownRenderer from "../components/MarkdownRenderer";
 import ReportHeader from "../components/report/ReportHeader";
 import ReportToolbar from "../components/report/ReportToolbar";
+import RefinementBox from "../components/report/RefinementBox";
 
 function ReportView() {
   const { reportId } = useParams();
@@ -199,6 +200,13 @@ function ReportView() {
           report={report}
           onDownloadPDF={downloadPDF}
           isGeneratingPDF={isGeneratingPDF}
+        />
+
+        <RefinementBox
+          project={project}
+          report={report}
+          reportId={reportId}
+          onUpdate={setReport}
         />
 
         <div

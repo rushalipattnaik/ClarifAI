@@ -10,9 +10,10 @@ import MarkdownRenderer from "../components/MarkdownRenderer";
 
 import ReportHeader from "../components/report/ReportHeader";
 import ReportToolbar from "../components/report/ReportToolbar";
+import RefinementBox from "../components/report/RefinementBox";
 
 function Report() {
-  const { report } = useProject();
+  const { projectIdea, report, setReport, reportId } = useProject();
   const { showToast } = useToast();
 
   const reportRef = useRef(null);
@@ -119,6 +120,13 @@ function Report() {
           report={report}
           onDownloadPDF={downloadPDF}
           isGeneratingPDF={isGeneratingPDF}
+        />
+
+        <RefinementBox
+          project={projectIdea}
+          report={report}
+          reportId={reportId}
+          onUpdate={setReport}
         />
 
         <div

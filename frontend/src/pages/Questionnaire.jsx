@@ -12,8 +12,14 @@ import { useProject } from "../hooks/useProject";
 function Questionnaire() {
   const navigate = useNavigate();
 
-  const { projectIdea, questions, answers, setAnswers, setReport } =
-    useProject();
+  const {
+    projectIdea,
+    questions,
+    answers,
+    setAnswers,
+    setReport,
+    setReportId,
+  } = useProject();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -63,13 +69,14 @@ function Questionnaire() {
 
         const generatedReport = response.data.report;
 
-        await api.post("/reports/", {
+        const saveResponse = await api.post("/reports/", {
           project: projectIdea,
           answers: answers,
           report: generatedReport,
         });
 
         setReport(generatedReport);
+        setReportId(saveResponse.data?.report_id ?? null);
 
         navigate("/report");
       } catch (err) {

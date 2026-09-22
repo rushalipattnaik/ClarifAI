@@ -6,8 +6,9 @@ function Footer() {
       </p>
 
       <p className="mt-1">
-        <a
-          href="https://github.com/rushalipattnaik/clarifAI"
+       <a 
+         
+         href="https://github.com/rushalipattnaik/ClarifAI"
           target="_blank"
           rel="noreferrer"
           className="text-indigo-400 transition hover:text-indigo-300"

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.models.schemas import ClarifyRequest, RefineReportRequest
 from app.services.ai_service import generate_report, refine_report
@@ -13,10 +13,16 @@ router = APIRouter(
 @router.post("/", dependencies=[Depends(rate_limit)])
 def clarify(request: ClarifyRequest):
 
-    report = generate_report(
-        request.project,
-        request.answers,
-    )
+    try:
+        report = generate_report(
+            request.project,
+            request.answers,
+        )
+    except Exception as error:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Report generation failed: {error}",
+        ) from error
 
     return {
         "report": report,
@@ -26,11 +32,17 @@ def clarify(request: ClarifyRequest):
 @router.post("/refine", dependencies=[Depends(rate_limit)])
 def refine(request: RefineReportRequest):
 
-    updated_report = refine_report(
-        request.project,
-        request.report,
-        request.instruction,
-    )
+    try:
+        updated_report = refine_report(
+            request.project,
+            request.report,
+            request.instruction,
+        )
+    except Exception as error:
+        raise HTTPException(
+            status_code=502,
+            detail=f"Refinement failed: {error}",
+        ) from error
 
     return {
         "report": updated_report,
